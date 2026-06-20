@@ -67,13 +67,14 @@ fill("region", x, y, "reset", "off")        // Backfill
 ### Structural Elements
 ```javascript
 // Beam/Liner
-structure("drawbeam"|"drawliner", "beamid", id, "xlim", x1, x2, "ylim", y1, y2)
+structure("drawbeam", "beamid", id, "xlim", x1, x2, "ylim", y1, y2)
+structure("drawliner", "beamid", id, "ifid1", iid1, "ifid2", iid2, "xlim", x1, x2, "ylim", y1, y2)
 structure("material", "beamid", id, "area", A, "I", I_val, "ymod", E)
 
 // Tieback
 structure("drawtieback", "tieid", id,
-  "fromstrucnodeatpoint", x1, y1, "topoint", x2, y2,
-  "pretens", P, "grouted", L, "segnum", n)
+  "frompoint", x1, y1, "topoint", x2, y2,
+  "grouted", L, "segnum", n)
 structure("material", "tieid", id,
   "area", A, "ymod", E, "kbond", k, "sbond", s)
 ```
@@ -91,7 +92,6 @@ solve("relax", "relaxFactor", 0.6, "relaxStep", 250, "xlim", x1, x2, "ylim", y1,
 plot("contour", "totdisp"|"xdisp"|"ydisp"|"sxx"|"syy"|"sxy"|"szz"|"pp")
 plot("struc", "beam"|"tieback", "moment"|"axialforce"|"shearforce")
 plot("interf", "normalstress"|"shearstress")
-tab("plot")                                 // New plot tab
 ```
 
 ### Low-Level Access

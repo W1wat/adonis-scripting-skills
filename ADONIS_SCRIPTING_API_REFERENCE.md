@@ -1,12 +1,15 @@
 # ADONIS FEM Scripting API Reference
 
-**Software:** ADONIS - A Free Finite Element Program for Geo-Engineers  
-**Author:** Roozbeh Geraili Mikola, Ph.D., P.E.  
-**Website:** roozbehgm.com  
-**Script Language:** JavaScript (.ajs files) + Python (via embedded adonis module)  
+**Software:** ADONIS - A Free Finite Element Program for Geo-Engineers
+**Author:** Roozbeh Geraili Mikola, Ph.D., P.E.
+**Website:** roozbehgm.com
+**Script Language:** JavaScript (.ajs files) + Python (via embedded adonis module)
 **Manual Version:** V3.90 English
 
-> This reference is extracted from the official ADONIS User Manual V3.90.
+> This reference is derived from the official ADONIS User Manual V3.90.
+> ADONIS is a trademark of its respective owner. This document is an independent
+> work and is not affiliated with, endorsed by, or connected to the ADONIS developer.
+> For the official manual, visit roozbehgm.com.
 
 ---
 

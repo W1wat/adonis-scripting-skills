@@ -44,10 +44,16 @@ Mandatory checks before delivering any ADONIS script. **All critical checks must
 - [ ] Boundary conditions are physically reasonable (not over-constrained)
 
 ### 7. Plot Commands Show Relevant Results
+
+**For static/construction analysis:**
 - [ ] At least one displacement plot (`xdisp`, `ydisp`, or `totdisp`)
 - [ ] At least one stress plot (`syy`, `sxx`, or `sxy`)
 - [ ] For structural elements: plot structural forces (`moment`, `axialforce`)
-- [ ] For FOS analysis: `solve("fos")` is last command (FOS value displayed)
+
+**For FOS (slope stability) analysis:**
+- [ ] `solve("fos")` is the final command (FOS value displayed by ADONIS)
+- [ ] Plot commands are optional; if present, they must appear BEFORE `solve("fos")`
+- [ ] Do NOT require displacement/stress plots for FOS-only analysis
 
 ---
 
@@ -106,7 +112,8 @@ Mandatory checks before delivering any ADONIS script. **All critical checks must
 - [ ] At least one material created and assigned
 - [ ] Boundary conditions applied
 - [ ] `solve()` called at least once
-- [ ] At least one `plot()` command at end
+- [ ] At least one `plot()` command at end **for static/construction analysis**
+- [ ] For FOS-only analysis: `solve("fos")` may be the final command without `plot()`
 
 ### 14. Gravity Loading (If Applicable)
 - [ ] `set("gravity", 0, 9.81)` or similar present
@@ -117,7 +124,7 @@ Mandatory checks before delivering any ADONIS script. **All critical checks must
 ### 15. Construction Sequence Logical
 - [ ] Excavation → Support installation → Solve sequence is correct
 - [ ] No support installed before excavation reaches that level
-- [ ] Tiebacks attached to existing structural nodes (`fromstrucnodeatpoint`)
+- [ ] Tiebacks use correct syntax: `frompoint` or `fromstrucnode` (NOT `fromstrucnodeatpoint`)
 - [ ] Multiple construction stages each have `solve()` after changes
 
 ---
@@ -133,11 +140,12 @@ Mandatory checks before delivering any ADONIS script. **All critical checks must
 | FOS analysis with non-MC material | Use `Mohr-Coulomb` for FOS |
 | Missing NMD for T3 elements | Add `"useNMD", "on"` to gmsh |
 | Placeholder values in final script | Replace all placeholders with actual values |
-| No plot commands | Add at least displacement and stress plots |
+| No plot commands (static analysis) | Add at least displacement and stress plots |
+| No plot commands (FOS analysis) | `solve("fos")` as final command is acceptable |
 
 ---
 
 ## Version
 
-- **Checklist Version**: 1.1
+- **Checklist Version**: 1.1.4
 - **Last Updated**: 2026-06-20

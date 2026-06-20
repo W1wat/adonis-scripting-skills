@@ -61,7 +61,6 @@ solve()
 // 11. Plot Results
 plot("contour", "totdisp"|"ydisp"|"syy"|...)
 plot("struc", "beam", "moment"|"axialforce")
-tab("plot")  // New plot tab
 ```
 
 ### 3. Common Patterns
@@ -165,7 +164,7 @@ excavate("region",30,-3)
 solve()
 
 // Install wall
-structure("drawliner","beamid",1,"iftype","bothSides","ifid1",1,"ifid2",2,
+structure("drawliner","beamid",1,"ifid1",1,"ifid2",2,
   "xlim",29.9,30.1,"ylim",-15.1,0.1)
 structure("material","beamid",1,"area",0.5,"I",0.01,"ymod",3e10)
 imaterial("assign","Mohr-Coulomb","ifid",1,"matname","Int1","jkn",1e9,"jks",1e9,"friction",25)
@@ -174,8 +173,8 @@ imaterial("assign","Mohr-Coulomb","ifid",2,"matname","Int2","jkn",1e9,"jks",1e9,
 solve()
 
 // Install tieback
-structure("drawtieback","tieid",1,"fromstrucnodeatpoint",30.0,-3.0,
-  "topoint",45,-10,"pretens",100000,"grouted",0.5,"segnum",5)
+structure("drawtieback","tieid",1,"frompoint",30.0,-3.0,
+  "topoint",45,-10,"grouted",0.5,"segnum",5)
 structure("material","tieid",1,"area",0.001,"ymod",2e11,"kbond",1e8,"sbond",1e8)
 
 solve()
@@ -212,7 +211,10 @@ When user doesn't specify properties, use these typical values (with explicit di
 
 ### 5. Important Notes
 
-1. **Coordinate system**: y=0 is ground surface, negative y is depth
+1. **Coordinate system** — TWO conventions exist, use the appropriate one:
+   - **Convention A** (tunnel, excavation, foundation, sheet pile, P-Hardening): y=0 at ground surface, negative y = depth
+   - **Convention B** (slope stability ONLY): y=0 at model bottom, positive y = height
+   - Always document which convention is used in the script header comment
 2. **Stress sign convention**: Compression is negative
 3. **excavate("region", x, y)**: Point (x,y) must be inside the region to excavate
 4. **solve("relax")**: Used for tunnel excavation to simulate stress relaxation
@@ -223,7 +225,7 @@ When user doesn't specify properties, use these typical values (with explicit di
 ### 6. Validation Checklist
 
 Before delivering script:
-- [ ] All coordinates are consistent (y=0 at surface, negative below)
+- [ ] All coordinates use consistent convention (A or B) and convention is documented in header
 - [ ] Boundary conditions are properly applied (no rigid body motion)
 - [ ] Material properties are reasonable for the material type
 - [ ] Initial stresses match gravity loading (k0 method)

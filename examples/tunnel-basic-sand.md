@@ -64,7 +64,6 @@ solve()
 
 // Plot results
 plot("contour","totdisp")
-tab("plot")
 plot("contour","syy")
 plot("element","state")
 ```
@@ -95,8 +94,14 @@ plot("element","state")
 
 ---
 
-## Expected Results
+## Typical Qualitative Checks
 
-- Maximum settlement at surface above tunnel: ~10-30mm (typical for this geometry)
-- Plastic zone around tunnel: ~1-2x tunnel radius
-- Stress concentration at tunnel sides: ~2-3x initial stress
+After running the script in ADONIS, verify these qualitative behaviors:
+
+- **Settlement pattern**: Maximum settlement should concentrate above the tunnel crown
+- **Plastic zone**: If present, should localize around the excavation boundary (not extend to domain edges)
+- **Stress redistribution**: Vertical stress should show arching effect around the tunnel opening
+- **Symmetry**: Results should be approximately symmetric about the tunnel centerline (x=0)
+- **Convergence**: Unbalance force ratio should drop below equilibrium ratio limit
+
+> **Note**: Numerical values depend on stiffness, K0, mesh density, constitutive model, and excavation method. Run ADONIS and check convergence to obtain actual results.

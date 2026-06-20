@@ -70,7 +70,6 @@ solve()
 
 // Plot results
 plot("contour","totdisp")
-tab("plot")
 plot("contour","syy")
 ```
 
@@ -121,7 +120,6 @@ solve()
 
 // Plot results
 plot("contour","totdisp")
-tab("plot")
 plot("contour","syy")
 plot("element","state")  // Show plastic state (only meaningful for MC)
 ```
@@ -258,7 +256,7 @@ excavate("region",40,-3)
 solve()
 
 // Install diaphragm wall
-structure("drawliner","beamid",1,"iftype","bothSides","ifid1",1,"ifid2",2,
+structure("drawliner","beamid",1,"ifid1",1,"ifid2",2,
   "xlim",39.9,40.1,"ylim",-25.1,0.1)
 structure("material","beamid",1,"area",0.8,"I",0.043,"ymod",3e10)
 imaterial("assign","Mohr-Coulomb","ifid",1,"matname","Int1",
@@ -273,8 +271,8 @@ excavate("region",40,-8)
 solve()
 
 // Install first tieback
-structure("drawtieback","tieid",1,"fromstrucnodeatpoint",40.0,-5.0,
-  "topoint",60,-15,"pretens",200000,"grouted",0.5,"segnum",5)
+structure("drawtieback","tieid",1,"frompoint",40.0,-5.0,
+  "topoint",60,-15,"grouted",0.5,"segnum",5)
 structure("material","tieid",1,"area",0.0015,"ymod",2.1e11,
   "kbond",1e8,"sbond",1e8,"spacing",2.0)
 
@@ -285,8 +283,8 @@ excavate("region",40,-13)
 solve()
 
 // Install second tieback
-structure("drawtieback","tieid",2,"fromstrucnodeatpoint",40.0,-10.0,
-  "topoint",60,-20,"pretens",250000,"grouted",0.5,"segnum",5)
+structure("drawtieback","tieid",2,"frompoint",40.0,-10.0,
+  "topoint",60,-20,"grouted",0.5,"segnum",5)
 structure("material","tieid",2,"area",0.0015,"ymod",2.1e11,
   "kbond",1e8,"sbond",1e8,"spacing",2.0)
 
@@ -294,7 +292,6 @@ solve()
 
 plot("contour","xdisp")
 plot("struc","beam","moment")
-tab("plot")
 plot("struc","tieback","axialforce")
 ```
 
@@ -336,18 +333,28 @@ applybc("xyfix","xlim",-30.1,30.1,"ylim",-30.1,-29.9)
 set("gravity",0,9.81)
 
 // Layered stress initialization
+// Formula: modified_value = value + yvar * y  (per API reference)
+// Convention A: y is negative below surface, so compression stress is negative
 var g1 = 1800*9.81
 var g2 = 1900*9.81
 var g3 = 2000*9.81
+var k0 = 0.5
+
+// Offsets ensure stress continuity at layer boundaries
+var off2 = 5*(g2 - g1)       // At y=-5: off2 + g2*(-5) = -g1*5 (matches layer 1 bottom)
+var off3 = 15*g3 - 5*g1 - 10*g2  // At y=-15: off3 + g3*(-15) = -g1*5 - g2*10
+
 initial("syy",0,"yvar",g1,"xlim",-30,30,"ylim",-5,0)
-initial("syy",g1*5,"yvar",g2,"xlim",-30,30,"ylim",-15,-5)
-initial("syy",g1*5+g2*10,"yvar",g3,"xlim",-30,30,"ylim",-30,-15)
-initial("sxx",0,"yvar",0.5*g1,"xlim",-30,30,"ylim",-5,0)
-initial("sxx",0.5*g1*5,"yvar",0.5*g2,"xlim",-30,30,"ylim",-15,-5)
-initial("sxx",0.5*(g1*5+g2*10),"yvar",0.5*g3,"xlim",-30,30,"ylim",-30,-15)
-initial("szz",0,"yvar",0.5*g1,"xlim",-30,30,"ylim",-5,0)
-initial("szz",0.5*g1*5,"yvar",0.5*g2,"xlim",-30,30,"ylim",-15,-5)
-initial("szz",0.5*(g1*5+g2*10),"yvar",0.5*g3,"xlim",-30,30,"ylim",-30,-15)
+initial("syy",off2,"yvar",g2,"xlim",-30,30,"ylim",-15,-5)
+initial("syy",off3,"yvar",g3,"xlim",-30,30,"ylim",-30,-15)
+
+initial("sxx",0,"yvar",k0*g1,"xlim",-30,30,"ylim",-5,0)
+initial("sxx",k0*off2,"yvar",k0*g2,"xlim",-30,30,"ylim",-15,-5)
+initial("sxx",k0*off3,"yvar",k0*g3,"xlim",-30,30,"ylim",-30,-15)
+
+initial("szz",0,"yvar",k0*g1,"xlim",-30,30,"ylim",-5,0)
+initial("szz",k0*off2,"yvar",k0*g2,"xlim",-30,30,"ylim",-15,-5)
+initial("szz",k0*off3,"yvar",k0*g3,"xlim",-30,30,"ylim",-30,-15)
 
 // Apply foundation load
 applybc("syy",-100000,"xlim",-2,2,"ylim",-0.1,0.1)
@@ -355,7 +362,6 @@ applybc("syy",-100000,"xlim",-2,2,"ylim",-0.1,0.1)
 solve()
 
 plot("contour","ydisp")
-tab("plot")
 plot("contour","syy")
 ```
 
@@ -395,7 +401,7 @@ excavate("region",3,-2,"reset","off")
 excavate("region",5,-6,"reset","off")
 
 // Install sheet pile
-structure("drawliner","beamid",1,"iftype","bothSides","ifid1",1,"ifid2",2,
+structure("drawliner","beamid",1,"ifid1",1,"ifid2",2,
   "xlim",9.9,10.1,"ylim",-10.1,0.1)
 structure("material","beamid",1,"area",0.2,"I",6.7e-4,"ymod",3.125e10)
 imaterial("assign","Mohr-Coulomb","ifid",1,"matname","Int1",
@@ -421,14 +427,14 @@ initial("xydisp",0)
 
 // Excavate and install tiebacks
 excavate("region",6.5,-2.5)
-structure("drawtieback","tieid",1,"fromstrucnodeatpoint",10.0,-1.0,
-  "topoint",18,-4,"pretens",2e4,"grouted",0.4,"segnum",5)
+structure("drawtieback","tieid",1,"frompoint",10.0,-1.0,
+  "topoint",18,-4,"grouted",0.4,"segnum",5)
 structure("material","tieid",1,"area",0.002,"ymod",2e11,"kbond",1e7,"sbond",5e6)
 solve()
 
 excavate("region",6.5,-6.0)
-structure("drawtieback","tieid",2,"fromstrucnodeatpoint",10.0,-5.0,
-  "topoint",18,-8,"pretens",2e4,"grouted",0.4,"segnum",5)
+structure("drawtieback","tieid",2,"frompoint",10.0,-5.0,
+  "topoint",18,-8,"grouted",0.4,"segnum",5)
 structure("material","tieid",2,"area",0.002,"ymod",2e11,"kbond",1e7,"sbond",5e6)
 solve()
 
@@ -436,10 +442,13 @@ plot("contour","xdisp")
 plot("struc","tieback","axialforce")
 ```
 
-## Template 7: P-Hardening Model (Advanced Soil)
+## Template 7: P-Hardening Model (EXPERIMENTAL)
+
+> **WARNING**: This template is EXPERIMENTAL. The P-Hardening model requires initial principal effective stresses (`sig1`, `sig2`, `sig3`) to be set. Representative values are provided in the `material("create",...)` call below, but you MUST verify the correct convention and order of principal stresses in ADONIS Help → Scripting Language before using this template for any analysis. The commented pseudocode below shows a possible depth-dependent sig1/sig2/sig3 concept, but `setelem("prop",...)` is NOT confirmed in the API reference. Do not uncomment it unless verified in ADONIS Help / official manual.
 
 ```javascript
-// Deep excavation with P-Hardening model
+// Deep excavation with P-Hardening model (EXPERIMENTAL)
+// COORDINATE CONVENTION A: y=0 at surface, negative y = depth
 newmodel()
 set("unit","stress-pa")
 
@@ -451,6 +460,9 @@ discretize("maxedge",1.5)
 gmsh("maxedge",1.5,"elemtype","T3","useNMD","on")
 
 // P-Hardening material
+// Representative initial principal stresses included to satisfy required parameters.
+// VERIFY: Check ADONIS Help for correct sig1/sig2/sig3 convention and ordering.
+// These values represent approximate K0 stress at mid-depth (~20m).
 material("create","P-Hardening","matid",1,"matname","Clay",
   "density",1800,
   "E50_ref",3e7,
@@ -461,7 +473,10 @@ material("create","P-Hardening","matid",1,"matname","Clay",
   "Eoed_ref",3e7,
   "cohesion",15000,
   "friction",25,
-  "dilation",0)
+  "dilation",0,
+  "sig1",-60000,
+  "sig2",-60000,
+  "sig3",-100000)
 material("assign","matid",1)
 
 applybc("xfix","xlim",-0.1,0.1,"ylim",-40.1,0.1)
@@ -474,18 +489,20 @@ initial("syy",0,"yvar",gamma,"xlim",0,60,"ylim",-40,0)
 initial("sxx",0,"yvar",0.6*gamma,"xlim",0,60,"ylim",-40,0)
 initial("szz",0,"yvar",0.6*gamma,"xlim",0,60,"ylim",-40,0)
 
-// Set initial principal stresses for P-Hardening
-var elist = getelem("allid")
-for (i = 0; i < elist.length; i++) {
-  var eid = elist[i]
-  var gp = getelem("gausspointpos",eid,1)
-  var depth = -gp[1]
-  var sv = gamma * depth
-  var sh = 0.6 * gamma * depth
-  setelem("prop","sig1",eid,1,-sh)
-  setelem("prop","sig2",eid,1,-sh)
-  setelem("prop","sig3",eid,1,-sv)
-}
+// EXPERIMENTAL / NOT VERIFIED:
+// The following concept may be used only after confirming setelem("prop",...) support in ADONIS.
+// API reference only documents setelem("stress",...) and setelem("pp",...).
+// var elist = getelem("allid")
+// for (i = 0; i < elist.length; i++) {
+//   var eid = elist[i]
+//   var gp = getelem("gausspointpos",eid,1)
+//   var depth = -gp[1]
+//   var sv = gamma * depth
+//   var sh = 0.6 * gamma * depth
+//   // setelem("prop","sig1",eid,1,-sh)
+//   // setelem("prop","sig2",eid,1,-sh)
+//   // setelem("prop","sig3",eid,1,-sv)
+// }
 
 solve()
 initial("xydisp",0)

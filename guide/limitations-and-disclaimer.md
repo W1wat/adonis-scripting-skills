@@ -33,7 +33,7 @@ Supported elements:
 - Beam (bending + axial)
 - Liner (beam with interface on both sides)
 - Cable (axial only, with grout bonding)
-- Tieback (pretensioned cable with grout)
+- Tieback / grouted anchor (explicit pretension command is not covered by this skill)
 - Strip (reinforcement strips)
 
 **Not supported:**
@@ -155,6 +155,6 @@ ADONIS is a trademark of its respective owner.
 
 ## Version
 
-- **Document Version**: 1.1
+- **Document Version**: 1.1.4
 - **Last Updated**: 2026-06-20
 - **Based on**: ADONIS User Manual V3.90

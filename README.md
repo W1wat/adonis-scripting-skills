@@ -8,7 +8,7 @@
 
 > "สร้างโมเดลอุโมงค์วงกลม รัศมี 5 เมตร ที่ระดับความลึก 20 เมตร ดินเป็น sand ความหนาแน่น 1800 kg/m3, friction 35 องศา"
 
-AI จะอ่าน skill files, เลือก template ที่เหมาะสม, ปรับ parameters, และสร้าง ADONIS script (.ajs) ที่พร้อมใช้งาน
+AI จะอ่าน skill files, เลือก template ที่เหมาะสม, ปรับ parameters, และสร้าง ADONIS script (.ajs) ที่พร้อมนำไปตรวจสอบและปรับแก้ในโปรแกรม ADONIS
 
 ##  โครงสร้าง Repository
 
@@ -18,19 +18,19 @@ adonis-scripting-skills/
 ├── SKILL.md                               ← AI entrypoint หลัก (trigger, workflow, rules)
 ├── LICENSE                                ← MIT license + engineering disclaimer
 ├── CHANGELOG.md                           ← Version tracking
-├── ADONIS_SCRIPTING_API_REFERENCE.md      ← API reference ครบถ้วน (1,808 lines)
+├── ADONIS_SCRIPTING_API_REFERENCE.md      ← API reference ครบถ้วน (1,800+ lines)
 ├── ADONIS_SKILL_SET_README.md             ← ภาพรวมชุด skill
-── guide/
+├── guide/
 │   ├── script-generation-workflow.md      ← Workflow + common patterns
 │   ├── quick-reference.md                 ← Command syntax สั้นๆ
 │   ├── validation-checklist.md            ← Deterministic validation checks
 │   └── limitations-and-disclaimer.md      ← Known limitations + engineering warnings
 ├── reference/
-│   ── adonis-scripting-api.md            ← Pointer ไปยัง API reference
+│   └── adonis-scripting-api.md            ← Pointer ไปยัง API reference
 ├── templates/
-│   └── all-templates.md                   ← 7 complete templates
+│   └── all-templates.md                   ← 8 template entries (7 use-case groups)
 ├── examples/
-│   ── tunnel-basic-sand.md               ← Example: prompt → script → review
+│   └── tunnel-basic-sand.md               ← Example: prompt → script → review
 └── tests/
     └── test-prompts.md                    ← 7 regression test prompts
 ```
@@ -43,7 +43,7 @@ adonis-scripting-skills/
 |------|------|----------|
 | `SKILL.md` | 12 KB | **AI entrypoint** — กำหนด trigger, workflow, rules, validation rules, limitations |
 | `ADONIS_SCRIPTING_API_REFERENCE.md` | 52 KB | **API reference เต็ม** จาก Official User Manual V3.90 — ทุก command, parameter, material model |
-| `ADONIS_SKILL_SET_README.md` | 9 KB | ภาพรวมชุด skill, วิธีใช้งาน, material properties reference |
+| `ADONIS_SKILL_SET_README.md` | 2 KB | ภาพรวมชุด skill (สั้น) |
 
 ### Guide
 
@@ -58,8 +58,8 @@ adonis-scripting-skills/
 
 | ไฟล์ | ขนาด | คำอธิบาย |
 |------|------|----------|
-| `templates/all-templates.md` | 15 KB | **7 templates สมบูรณ์** — circular tunnel (elastic + MC), NATM, slope FOS, deep excavation, foundation, sheet pile, P-Hardening |
-| `examples/tunnel-basic-sand.md` | 3 KB | Example: user prompt → generated script → validation review → expected results |
+| `templates/all-templates.md` | 15 KB | **8 template entries (7 use-case groups)** — circular tunnel (elastic + MC), NATM, slope FOS, deep excavation, foundation, sheet pile, P-Hardening |
+| `examples/tunnel-basic-sand.md` | 3 KB | Example: user prompt → generated script → validation review → qualitative checks |
 
 ### Testing & Meta
 
@@ -67,7 +67,7 @@ adonis-scripting-skills/
 |------|------|----------|
 | `tests/test-prompts.md` | 3 KB | 7 standard prompts สำหรับ regression testing |
 | `LICENSE` | 2 KB | MIT license + engineering disclaimer |
-| `CHANGELOG.md` | 2 KB | Version history (v1.0.0 → v1.1.0) |
+| `CHANGELOG.md` | 2 KB | Version history (v1.0.0 → v1.1.4) |
 | `reference/adonis-scripting-api.md` | 2 KB | Pointer ไปยัง API reference (relative path) |
 
 ## 🎯 Use Cases ที่รองรับ
@@ -178,7 +178,7 @@ AI สร้าง script ตาม workflow ใน [`guide/script-generation-wo
 
 - **Official Website:** [roozbehgm.com](http://roozbehgm.com)
 - **Based on:** ADONIS User Manual V3.90
-- **Tutorial scripts:** 11 official tutorials (ในโฟลเดอร์ `scripts/`)
+- **Official tutorial scripts:** Available from ADONIS software distribution (not included in this repo)
 
 ## 📄 License
 
@@ -190,9 +190,11 @@ MIT License — ดู [`LICENSE`](LICENSE) สำหรับรายละเ
 
 | Version | Date | Key Changes |
 |---------|------|-------------|
+| 1.1.4 | 2026-06-20 | Fixed syntax blockers (drawtieback, drawliner), Template 7 experimental, copyright notice |
+| 1.1.1 | 2026-06-20 | Fixed path mismatches, template paths, convention conflicts, FOS validation |
 | 1.1.0 | 2026-06-20 | Added SKILL.md, fixed inconsistencies, added disclaimers, restructured repo |
 | 1.0.0 | 2026-06-19 | Initial release with API reference and templates |
 
 ---
 
-*Created: 2026-06-19 | Updated: 2026-06-20 | Version: 1.1.0*
+*Created: 2026-06-19 | Updated: 2026-06-20 | Version: 1.1.4*

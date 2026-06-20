@@ -93,7 +93,7 @@ Create a tunnel model.
 
 ---
 
-## Test 7: P-Hardening Model
+## Test 7: P-Hardening Model (EXPERIMENTAL)
 
 **Prompt:**
 ```
@@ -101,10 +101,11 @@ Model deep excavation using P-Hardening soil model. Clay with E50=30MPa, frictio
 ```
 
 **Expected:**
-- Template 7 should be used
+- Template 7 may be used only as EXPERIMENTAL
+- Generated answer MUST include a warning that P-Hardening initial stress syntax is not fully verified
+- Do NOT claim that the script is production-ready or fully validated
+- User must verify `sig1`, `sig2`, `sig3` handling in ADONIS Help / official manual
 - Material: `P-Hardening` with all required parameters
-- Initial principal stresses set via `setelem("prop","sig1",...)`
-- More complex than Mohr-Coulomb templates
 
 ---
 
@@ -122,5 +123,5 @@ For each test:
 
 ## Version
 
-- **Test Suite Version**: 1.0
+- **Test Suite Version**: 1.1.4
 - **Created**: 2026-06-20

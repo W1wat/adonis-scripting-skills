@@ -23,7 +23,7 @@ Use this skill when the user asks to:
 
 Read these files IN ORDER before generating any script:
 
-1. **`reference/ADONIS_SCRIPTING_API_REFERENCE.md`** — Complete API reference (1,808 lines)
+1. **`ADONIS_SCRIPTING_API_REFERENCE.md`** — Complete API reference (1,808 lines, at repo root)
    - All commands, parameters, material models
    - Element/node getter/setter reference
    - Python API reference
@@ -38,8 +38,15 @@ Read these files IN ORDER before generating any script:
    - Engineering sanity checks
    - Script completeness verification
 
-4. **`templates/`** — Ready-to-use templates
-   - 7 complete templates for common use cases
+4. **`templates/all-templates.md`** — Ready-to-use templates (8 template entries covering 7 use-case groups in one file)
+   - Template 1A: Circular tunnel (IsoElastic)
+   - Template 1B: Circular tunnel (Mohr-Coulomb)
+   - Template 2: NATM tunnel with shotcrete
+   - Template 3: Slope stability (FOS)
+   - Template 4: Deep excavation with tiebacks
+   - Template 5: Foundation on layered soil
+   - Template 6: Anchored sheet pile wall
+   - Template 7: P-Hardening model
 
 5. **`guide/limitations-and-disclaimer.md`** — Known limitations and engineering disclaimer
    - 2D plane strain assumption
@@ -76,14 +83,15 @@ From the user's natural language, extract:
 
 ### Step 3: Select Template
 
-Match user request to closest template:
-- Circular tunnel → `templates/tunnel-circular-mohr-coulomb.ajs.md`
-- NATM tunnel with shotcrete → `templates/tunnel-natm-shotcrete.ajs.md`
-- Slope stability → `templates/slope-fos.ajs.md`
-- Deep excavation with support → `templates/deep-excavation-tieback.ajs.md`
-- Foundation on layered soil → `templates/foundation-layered-soil.ajs.md`
-- Sheet pile wall → `templates/sheet-pile-wall.ajs.md` (if available)
-- P-Hardening model → `templates/p-hardening-model.ajs.md` (if available)
+Match user request to closest template in `templates/all-templates.md`:
+- Circular tunnel (elastic) → **Template 1A** (IsoElastic)
+- Circular tunnel (plastic) → **Template 1B** (Mohr-Coulomb)
+- NATM tunnel with shotcrete → **Template 2**
+- Slope stability → **Template 3** (FOS, Convention B)
+- Deep excavation with support → **Template 4**
+- Foundation on layered soil → **Template 5**
+- Sheet pile wall → **Template 6**
+- P-Hardening model → **Template 7** (EXPERIMENTAL only; warn user that initial principal stress syntax must be verified in ADONIS before use)
 
 If no template matches, use the workflow in `guide/script-generation-workflow.md`.
 
@@ -145,12 +153,16 @@ Run ALL checks from `guide/validation-checklist.md` before delivering.
 **Critical checks (must pass):**
 - [ ] No placeholder values remain (`...`, `x1`, `value`, `model_type`)
 - [ ] All coordinates use consistent convention (document which one)
-- [ ] Material model matches analysis type (elastic → IsoElastic, plastic → Mohr-Coulomb, etc.)
+- [ ] Material model matches analysis type (elastic → IsoElastic, plastic → Mohr-Coulomb, FOS → Mohr-Coulomb)
 - [ ] Domain boundaries are at least 3-5x tunnel diameter away from excavation
 - [ ] Initial equilibrium solved before construction stages
 - [ ] Displacements reset (`initial("xydisp", 0)`) before construction stages
 - [ ] Boundary conditions prevent rigid body motion
-- [ ] Plot commands show relevant results for the analysis type
+- [ ] Plot commands show relevant results (see note below)
+
+**Note on plots:**
+- For static/construction analysis: require displacement + stress plots
+- For FOS analysis: `solve("fos")` must be final command; plots are optional and must come before FOS
 
 **Engineering sanity checks:**
 - [ ] Material properties are within typical ranges for the material type
@@ -218,7 +230,7 @@ All scripts MUST be reviewed by a qualified geotechnical engineer before use in 
 
 ## Version
 
-- **Skill Version**: 1.1
+- **Skill Version**: 1.1.4
 - **Based on**: ADONIS User Manual V3.90
 - **Last Updated**: 2026-06-20
 - **Changelog**: See `CHANGELOG.md`
