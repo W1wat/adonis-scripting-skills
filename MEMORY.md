@@ -1,4 +1,0 @@
-- [ADONIS Scripting API](reference/adonis-scripting-api.md) — Complete API reference (1808 lines) from official User Manual V3.90 - all commands, parameters, material models
-- [ADONIS Script Generation Guide](project/adonis-script-generation.md) — Guidelines for generating scripts from natural language - workflow, patterns, material properties, validation checklist
-- [ADONIS Quick Reference](project/adonis-quick-reference.md) — Quick command reference with syntax and examples for most commonly used commands
-- [ADONIS Example Templates](project/adonis-templates.md) — 7 complete templates: circular tunnel, NATM tunnel, slope stability, deep excavation, foundation, sheet pile wall, P-Hardening model
