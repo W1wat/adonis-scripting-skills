@@ -7,7 +7,7 @@
 ### 1. ADONIS_SCRIPTING_API_REFERENCE.md
 คู่มือ API ครบถ้วนจาก Official User Manual V3.90 (1,808 lines)
 - JavaScript fundamentals, Element/Node getter/setter, File I/O, Python API
-- 8 Material Models: IsoElastic, Mohr-Coulomb, Hoek-Brown, Modified Hoek-Brown, Cam-Clay, Strain-Softening, P-Hardening, Ubiquitous-Joint
+- 8 Material Models: IsoElastic, Mohr-Coulomb, Hoek-Brown, Generalized Hoek-Brown, Cam-Clay, Strain-Softening, P-Hardening, Ubiquitous-Joint
 - Structural elements, Solve commands, Settings, Plot commands
 
 ### 2. adonis-script-generation.md
